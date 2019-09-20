@@ -77,3 +77,24 @@ if (!file.exists(coded_rda)) {
 } else {
   load(coded_rda)
 }
+
+# join users with locations ----
+
+followers_info_w_location <- left_join(followers_info, coded, by = "location")
+
+friends_info_w_location <- left_join(friends_info, coded, by = "location")
+
+# example summaries ----
+
+# notice that many users have NA location and that there are users with
+# multiple locations
+
+followers_info_w_location %>% 
+  group_by(lon, lat) %>% 
+  summarise(n_users = n()) %>% 
+  ungroup() %>% 
+  left_join(
+    coded %>% drop_na()
+  ) %>% 
+  select(location, n_users) %>% 
+  arrange(-n_users)
