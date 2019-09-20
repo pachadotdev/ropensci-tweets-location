@@ -14,5 +14,6 @@ followers_info_w_location %>%
       drop_na() %>% 
       distinct(lon, lat, .keep_all = T)
   ) %>% 
-  select(location, n_users) %>% 
+  mutate(date = Sys.Date()) %>% 
+  select(date, location, n_users) %>% 
   arrange(-n_users)
