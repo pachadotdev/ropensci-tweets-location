@@ -27,7 +27,7 @@ I followed Bob Rudis’s [21 recipes for Mining Twitter data with rtweet](https:
     * Twitter's API does not allow obtaining followers on a date yyyy-mm-dd, it gives you a stock of followers at the time
     of running the API call
     
-    * In order to compute the growth rate in the social network, you'll need to run the script `data-analysis.R` and use
+    * In order to compute the growth rate in the social network, you'll need to run the script `01-data-analysis.R` and use
     the files here to compare the number of followers on date T against followers on date T+t
 
 ### Todos
