@@ -1,7 +1,7 @@
 # packages ----
 
 if (!require(pacman)) install.packages("pacman")
-pacman::p_load(tidyverse, rtweet, ggmap)
+pacman::p_load(tidyverse, rtweet, ggmap, lubridate)
 
 # files ----
 
