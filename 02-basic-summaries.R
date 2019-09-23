@@ -25,7 +25,7 @@ drop_na(location_summary) %>%
   geom_col(aes(x = location, y = n_users)) +
   coord_flip() +
   theme_minimal() +
-  labs(title = "Top 10 locations of @ropensci followers)
+  labs(title = "Top 10 locations of @ropensci followers")
 
 # mentions summary ----
 
