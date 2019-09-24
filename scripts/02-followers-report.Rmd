@@ -1,0 +1,99 @@
+---
+title: "02-followers-report"
+author: "Pachá"
+date: "24-09-2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Packages
+
+```{r}
+library(tidyverse)
+```
+
+## Data
+
+These datasets can be obtained by running `scripts/01-users-and-location-extraction.R`:
+
+```{r}
+load("../data/followers-country-2019-09-20.rda")
+twitter_metrics <- read_csv("https://raw.githubusercontent.com/ropenscilabs/ropensci-tweets/master/twitter_metrics_monthly_rOpenSci.csv")
+```
+
+## Summaries
+
+Up to 2019-09-20 we have:
+
+```{r}
+twitter_metrics <- twitter_metrics %>% 
+  filter(date <= as.Date("2019-09-20"))
+
+followers_and_mentions <- tibble(
+  total_followers = sum(followers_by_country$n_followers),
+  total_mentions = sum(twitter_metrics$mentions)
+)
+
+followers_and_mentions
+```
+
+We have readers in:
+
+```{r}
+countries <- followers_by_country %>% 
+  filter(country != "Undetermined location") %>% 
+  summarise(total_countries = n())
+
+countries
+```
+
+The top locations are:
+
+```{r}
+followers_by_country %>% 
+  filter(row_number() <= 10) %>% 
+  mutate(
+    country = as_factor(country),
+    country = fct_rev(country)
+  ) %>% 
+  ggplot() +
+  geom_col(aes(x = country, y = n_followers), fill = "#002147") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 locations of @ropensci followers")
+```
+
+And the evolution of mentions during 2019 is:
+
+```{r}
+twitter_metrics %>% 
+  filter(year(date) == 2019) %>% 
+  mutate(week = week(date)) %>% 
+  group_by(week) %>% 
+  summarise(mentions = sum(mentions, na.rm = T)) %>% 
+  ggplot() +
+  geom_line(aes(x = week, y = mentions)) +
+  theme_minimal() +
+  labs(title = "Mentions during 2019's weeks")
+```
+
+## Saving the aggregations
+
+```{r}
+bind_cols(
+  followers_and_mentions,
+  countries
+) %>% 
+  write_csv("../data/summary-2019-09-20.csv")
+```
+
+```{r}
+bind_cols(
+  followers_and_mentions,
+  countries
+) %>% 
+  write_csv("../data/summary-2019-09-20.csv")
+```
